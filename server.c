@@ -45,13 +45,18 @@ int main(int argc, char** argv) {
         return -1;
     }
 
+
+
     while (1) {
-        char buf[1024];
-        memset(buf, 0, sizeof(buf));
+        char receiveBuf[1024];
+        char sendBuf[1024] = "15.165.129.230-8080|54.89.51.96-9000|15.165.129.230-8080|54.89.51.96-9000";
+        memset(receiveBuf, 0, sizeof(receiveBuf));
         
-        int bytesRead = read(cSockfd, buf, sizeof(buf) - 1);
+        int bytesRead = read(cSockfd, receiveBuf, sizeof(receiveBuf) - 1);
         if (bytesRead > 0) {
-            printf("%s\n", buf);
+            printf("%s\n", receiveBuf);
+            write(cSockfd, buf, strlen(sendBuf));
+
         }
         else if (bytesRead == 0) {
             printf("disconnection\n");
@@ -64,7 +69,9 @@ int main(int argc, char** argv) {
             break;
         }
     }
-    
+
+
+
     // memset(buf, 0, sizeof(buf));
     // read(cSockfd, buf, sizeof(buf));
     // printf("%s\n", buf);
