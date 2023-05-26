@@ -45,12 +45,20 @@ int main(int argc, char** argv) {
         return -1;
     }
 
-    memset(buf, 0, sizeof(buf));
-    read(cSockfd, buf, sizeof(buf));
-    printf("%s\n", buf);
+    for(int i = 0 ; i < 2 ; i++){
+        memset(buf, 0, sizeof(buf));
+        read(cSockfd, buf, sizeof(buf));
+        printf("%s\n", buf);
 
-    strcat(buf, "_이상준");
-    write(cSockfd, buf, strlen(buf));
+        strcat(buf, "*");
+        write(cSockfd, buf, strlen(buf));
+    }
+    // memset(buf, 0, sizeof(buf));
+    // read(cSockfd, buf, sizeof(buf));
+    // printf("%s\n", buf);
+
+    // strcat(buf, "*");
+    // write(cSockfd, buf, strlen(buf));
 
     close(cSockfd);
     close(sockfd);
