@@ -8,7 +8,7 @@
 int main(int argc, char** argv) {
     int sockfd, cSockfd;
     struct sockaddr_in servaddr, cliaddr;
-    char buf[1024];
+
     socklen_t len;
 
     if(argc < 2) {
@@ -45,14 +45,26 @@ int main(int argc, char** argv) {
         return -1;
     }
 
-    for(int i = 0 ; i < 2 ; i++){
+    while (1) {
+        char buf[1024];
         memset(buf, 0, sizeof(buf));
-        read(cSockfd, buf, sizeof(buf));
-        printf("%s\n", buf);
-
-        strcat(buf, "*");
-        write(cSockfd, buf, strlen(buf));
+        
+        int bytesRead = read(cSockfd, buf, sizeof(buf) - 1);
+        if (bytesRead > 0) {
+            printf("%s\n", buf);
+        }
+        else if (bytesRead == 0) {
+            printf("disconnection\n");
+            close(cSockfd);
+            break;
+        }
+        else {
+            perror("read");
+            close(cSockfd);
+            break;
+        }
     }
+    
     // memset(buf, 0, sizeof(buf));
     // read(cSockfd, buf, sizeof(buf));
     // printf("%s\n", buf);
